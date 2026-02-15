@@ -48,7 +48,7 @@ if [[ "$attend" == "y" ]] || [[ "$attend" == "Y" ]]; then
 
 fi
 
-echo "Verifying if pyhton 3 is installed"
+echo "Verifying if python 3 is installed"
 
 python3 --version
 if [ $? -eq 0 ]; then
@@ -71,5 +71,5 @@ if [[ -f "$project_dir/attendance_checker.py" ]] && \
     echo "All files are in here"
     echo "Directory structure is good"
 else
-    echo "⚠️  Warning: Some files may be missing"
+    echo "Warning: Some files may be missing"
 fi
