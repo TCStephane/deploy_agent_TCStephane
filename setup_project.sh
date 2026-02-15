@@ -1,5 +1,21 @@
 #!/usr/bin/env bash
 
+#Implimenting the signal trap
+
+cleanup() {
+    echo "Process interrupted. Cleaning up..."
+    
+    if [[ -d "$project_dir" ]]; then
+        mv "$project_dir" "${project_dir}_archive"
+        echo "Project archived as ${project_dir}_archive"
+    else
+        echo "No project directory to archive"
+    fi
+    
+    exit 1
+}
+trap cleanup SIGINT
+
 #taking the name from the user
 echo "please enter the factory name:"
 read input
@@ -18,7 +34,7 @@ cp program_files/reports.log $project_dir/reports/
 echo "Do you want to change the attendance threshold? (y/n)"
 read attend
 
-if ["$attend" == "y"] || ["$attend" == "Y"]; then
+if [[ "$attend" == "y" ]] || [[ "$attend" == "Y" ]]; then
 	echo "Enter Warning threshold:"
 	read warning
 
@@ -26,4 +42,8 @@ if ["$attend" == "y"] || ["$attend" == "Y"]; then
 	read fail
 
 	#changing each value using sed
-	fi
+	#sed syntax: sed -i "s/OLD/NEW/ file_name
+	sed -i "s/\"warning_threshold\": [0-9]*/\"warning_threshold\": $warning/" "$project_dir/Helpers/config.json"
+	sed -i "s/\"failure_threshold\": [0-9]*/\"failure_threshold\": $fail/" "$project_dir/Helpers/config.json"
+
+fi
