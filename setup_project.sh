@@ -47,3 +47,29 @@ if [[ "$attend" == "y" ]] || [[ "$attend" == "Y" ]]; then
 	sed -i "s/\"failure_threshold\": [0-9]*/\"failure_threshold\": $fail/" "$project_dir/Helpers/config.json"
 
 fi
+
+echo "Verifying if pyhton 3 is installed"
+
+python3 --version
+if [ $? -eq 0 ]; then
+	echo "Python3 is installed"
+else
+	python --version
+	if [ $? -eq 0 ]; then
+		echo "Python is here but check if it is python 3."
+	else
+		echo "Warning: Python3 is not installed"
+	fi
+fi
+
+echo "Verifying if the directory stucture is okay"
+
+if [[ -f "$project_dir/attendance_checker.py" ]] && \
+   [[ -f "$project_dir/Helpers/assets.csv" ]] && \
+   [[ -f "$project_dir/Helpers/config.json" ]] && \
+   [[ -f "$project_dir/reports/reports.log" ]]; then
+    echo "All files are in here"
+    echo "Directory structure is good"
+else
+    echo "⚠️  Warning: Some files may be missing"
+fi
