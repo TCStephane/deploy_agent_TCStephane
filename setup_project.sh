@@ -6,8 +6,10 @@ cleanup() {
     echo "Process interrupted. Cleaning up..."
     
     if [[ -d "$project_dir" ]]; then
-        mv "$project_dir" "${project_dir}_archive"
-        echo "Project archived as ${project_dir}_archive"
+	mkdir -p archives
+
+        mv "$project_dir" "archives/${project_dir}_archive"
+        echo "Project archived as archives/${project_dir}_archive"
     else
         echo "No project directory to archive"
     fi
@@ -38,8 +40,18 @@ if [[ "$attend" == "y" ]] || [[ "$attend" == "Y" ]]; then
 	echo "Enter Warning threshold:"
 	read warning
 
+	if ! [[ "$warning" =~ ^[0-9]+$ ]]; then
+        	echo "Invalid input. Using default value (75)."
+        	warning=75
+    	fi
+
 	echo "Enter failure threshold:"
 	read fail
+
+	if ! [[ "$fail" =~ ^[0-9]+$ ]]; then
+        	echo "Invalid input. Using default value (50)."
+        	fail=50
+    	fi
 
 	#changing each value using sed
 	#sed syntax: sed -i "s/OLD/NEW/ file_name
@@ -55,7 +67,7 @@ if [ $? -eq 0 ]; then
 	echo "Python3 is installed"
 else
 	python --version
-	if [ $? -eq 0 ]; then
+	if [ $? -eq 0 i]; then
 		echo "Python is here but check if it is python 3."
 	else
 		echo "Warning: Python3 is not installed"
